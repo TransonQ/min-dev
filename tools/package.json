@@ -1,0 +1,9 @@
+{
+  "name": "@transon/tools",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {},
+  "exports": {
+    ".": "./src/index.ts"
+  }
+}

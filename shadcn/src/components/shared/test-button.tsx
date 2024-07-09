@@ -1,4 +1,5 @@
 import { cn } from "@/lib";
+import { generateArray } from "@transon/tools";
 import { Button } from "../ui";
 
 export type TestButtonProps = {
@@ -21,6 +22,9 @@ export const TestButton = ({
   label,
   ...props
 }: TestButtonProps) => {
+  const testMonorepo = generateArray(10, (i) => i);
+  console.log("test @transon/tools: ", testMonorepo);
+
   return (
     <Button
       variant={primary ? "default" : "secondary"}
