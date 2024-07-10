@@ -7,3 +7,7 @@ tsc --init
 ```
 
 2. 初始化 eslint
+
+```
+pnpm create @eslint/config@latest
+```
