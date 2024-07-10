@@ -1,11 +1,14 @@
 import { MockTableData } from "@/mocks";
 import { ColumnDef } from "@tanstack/react-table";
-import { IndexTableHeader } from "./index-table-header";
+import { format } from "date-fns";
+import { IndexTableHeader } from "../shared/index-table-header";
 
-export const tableColumns: ColumnDef<MockTableData>[] = [
+export const exampleColumns: ColumnDef<MockTableData>[] = [
   {
     id: "id",
     accessorKey: "id",
+    enableSorting: false,
+    // enableHiding: false,
     header: ({ column }) => {
       return <IndexTableHeader column={column} title="ID" />;
     },
@@ -14,6 +17,8 @@ export const tableColumns: ColumnDef<MockTableData>[] = [
   {
     id: "name",
     accessorKey: "name",
+    // enableSorting: false,
+    enableHiding: false,
     header: ({ column }) => {
       return <IndexTableHeader column={column} title="Name" />;
     },
@@ -22,6 +27,8 @@ export const tableColumns: ColumnDef<MockTableData>[] = [
   {
     id: "email",
     accessorKey: "email",
+    enableSorting: false,
+    // enableHiding: false,
     header: ({ column }) => {
       return <IndexTableHeader column={column} title="Email" />;
     },
@@ -30,6 +37,8 @@ export const tableColumns: ColumnDef<MockTableData>[] = [
   {
     id: "address",
     accessorKey: "address",
+    enableSorting: false,
+    // enableHiding: false,
     header: ({ column }) => {
       return <IndexTableHeader column={column} title="Address" />;
     },
@@ -38,6 +47,8 @@ export const tableColumns: ColumnDef<MockTableData>[] = [
   {
     id: "city",
     accessorKey: "city",
+    enableSorting: false,
+    // enableHiding: false,
     header: ({ column }) => {
       return <IndexTableHeader column={column} title="City" />;
     },
@@ -46,6 +57,8 @@ export const tableColumns: ColumnDef<MockTableData>[] = [
   {
     id: "state",
     accessorKey: "state",
+    enableSorting: false,
+    // enableHiding: false,
     header: ({ column }) => {
       return <IndexTableHeader column={column} title="State" />;
     },
@@ -54,9 +67,21 @@ export const tableColumns: ColumnDef<MockTableData>[] = [
   {
     id: "zip",
     accessorKey: "zip",
+    enableSorting: false,
+    // enableHiding: false,
     header: ({ column }) => {
       return <IndexTableHeader column={column} title="Zip" />;
     },
     cell: ({ row }) => <div>{row.getValue("zip")}</div>,
+  },
+  {
+    id: "date",
+    accessorKey: "date",
+    enableSorting: true,
+    // enableHiding: false,
+    header: ({ column }) => {
+      return <IndexTableHeader column={column} title="Date" />;
+    },
+    cell: ({ row }) => <div>{format(row.getValue("date"), "yyyy-MM-dd")}</div>,
   },
 ];

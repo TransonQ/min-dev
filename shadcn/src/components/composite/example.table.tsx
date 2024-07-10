@@ -1,0 +1,52 @@
+import { mockTableData } from "@/mocks";
+import {
+  getCoreRowModel,
+  useReactTable,
+  VisibilityState,
+} from "@tanstack/react-table";
+import { useState } from "react";
+import { IndexTable } from "../shared";
+import { exampleColumns } from "./example.columns";
+import { ExampleFilters } from "./example.filters";
+
+export const ExampleTable = () => {
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const table = useReactTable({
+    data: mockTableData,
+    state: {
+      columnVisibility,
+      // columnFilters,
+      // pagination,
+      // sorting,
+      // columnOrder,
+    },
+    /** 列定义 */
+    columns: exampleColumns,
+    // onColumnOrderChange: setColumnOrder,
+    onColumnVisibilityChange: setColumnVisibility,
+    // /** 核心 */
+    getCoreRowModel: getCoreRowModel(),
+    // /** 手动排序 */
+    // manualSorting: true,
+    // onSortingChange: setSorting,
+    // /** 手动筛选 */
+    // manualFiltering: true,
+    // onColumnFiltersChange: setColumnFilters,
+    // /** 手动分页 */
+    // manualPagination: true,
+    // pageCount: pageCount,
+    // rowCount: rowCount,
+    // onPaginationChange: setPagination,
+  });
+
+  return (
+    <div className="flex flex-col gap-4">
+      <ExampleFilters table={table} />
+      <IndexTable
+        columns={exampleColumns}
+        table={table}
+        stickyLastColumn={false}
+      />
+    </div>
+  );
+};

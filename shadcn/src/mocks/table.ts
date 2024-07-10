@@ -8,10 +8,11 @@ export type MockTableData = {
   city: string;
   state: string;
   zip: string;
+  date: number;
 };
 
-export const tableData: MockTableData[] = generateArray<MockTableData>(
-  50,
+export const mockTableData: MockTableData[] = generateArray<MockTableData>(
+  20,
   (i) => ({
     id: i.toString(),
     name: `John_Doe_${i}`,
@@ -20,6 +21,6 @@ export const tableData: MockTableData[] = generateArray<MockTableData>(
     city: `City_${i}`,
     state: `State_${i}`,
     zip: `zip_${i}`,
+    date: Date.now(),
   })
 );
-

@@ -5,7 +5,7 @@ export type MockOptions = {
   value: string;
 };
 
-export const options: MockOptions[] = generateArray<MockOptions>(10, (i) => ({
+export const mockOptions: MockOptions[] = generateArray<MockOptions>(10, (i) => ({
   label: `Option_${i}`,
   value: i.toString(),
 }));
