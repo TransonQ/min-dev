@@ -1,0 +1,139 @@
+import { Meta } from "@storybook/blocks";
+
+<Meta title="composite/IndexTable/Filters/FilterDateRange" />
+
+```tsx
+import { cn } from "@/lib";
+import { PlusCircledIcon } from "@radix-ui/react-icons";
+import { Column } from "@tanstack/react-table";
+import { format, sub } from "date-fns";
+import { zhCN } from "date-fns/locale";
+import { DateRange } from "react-day-picker";
+
+import {
+  Badge,
+  Button,
+  Calendar,
+  Popover,
+  PopoverClose,
+  PopoverContent,
+  PopoverTrigger,
+  Separator,
+} from "../ui";
+
+interface FilterDateRangeProps<TData, TValue> {
+  column?: Column<TData, TValue>;
+  title?: string;
+}
+
+type DateRangeState = DateRange | undefined;
+
+/** 踩坑: setFilterValue 会触发重新渲染,且只能是数组结构 <T>[] */
+type DateRangeValues = DateRangeState[] | undefined;
+
+export function FilterDateRange<TData, TValue>({
+  column,
+  title,
+}: FilterDateRangeProps<TData, TValue>) {
+  const selectDate = column?.getFilterValue() as DateRangeValues;
+  const setSelectDate = (value: DateRangeValues) =>
+    column?.setFilterValue(value);
+
+  // // 使用 usestate 实现, 帮助理解:
+  // const [date, setDate] = useState<DateRangeState>(undefined)
+  // const fmtFrom = date?.from && format(date.from, "yyyy/MM/dd")
+  // const fmtTo = date?.to && format(date.to, "yyyy/MM/dd")
+
+  const fmtFrom =
+    selectDate?.[0]?.from && format(selectDate[0].from, "yyyy/MM/dd");
+  const fmtTo =
+    selectDate && selectDate?.[0]?.to && format(selectDate[0].to, "yyyy/MM/dd");
+
+  return (
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button
+          variant="outline"
+          size="sm"
+          className={cn("h-8 border-dashed", selectDate && "border-solid")}
+        >
+          <PlusCircledIcon className="mr-2 h-4 w-4" />
+          {title}
+          {fmtFrom && (
+            <>
+              <Separator orientation="vertical" className="mx-2 h-4" />
+              <Badge
+                variant="secondary"
+                className="rounded-sm px-1 font-normal "
+              >
+                {fmtFrom + (fmtTo ? ` - ${fmtTo}` : "")}
+              </Badge>
+            </>
+          )}
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-auto p-0" align="start">
+        <Calendar
+          locale={zhCN}
+          initialFocus
+          mode="range"
+          numberOfMonths={2}
+          selected={selectDate?.[0]}
+          onSelect={(range) => {
+            // setDate(range)
+            column?.setFilterValue([range]);
+          }}
+        />
+        <Separator />
+        <div className="p-2 flex justify-between gap-2">
+          <div>
+            <Button
+              variant="ghost"
+              size={"sm"}
+              className={cn("h-8 px-4")}
+              onClick={() =>
+                setSelectDate([
+                  {
+                    from: sub(new Date(), { days: 7 }),
+                    to: new Date(),
+                  },
+                ])
+              }
+            >
+              {"Last 7 days"}
+            </Button>
+            <Button
+              variant="ghost"
+              size={"sm"}
+              className={cn("h-8 px-4")}
+              onClick={() =>
+                setSelectDate([
+                  { from: sub(new Date(), { days: 30 }), to: new Date() },
+                ])
+              }
+            >
+              {"Last 30 days"}
+            </Button>
+          </div>
+
+          <PopoverClose asChild>
+            <Button
+              variant="outline"
+              size={"sm"}
+              className={cn("h-8 px-4")}
+              disabled={!selectDate}
+              onClick={() => {
+                // setDate(undefined)
+                setSelectDate(undefined);
+              }}
+            >
+              {"Clear"}
+            </Button>
+          </PopoverClose>
+        </div>
+      </PopoverContent>
+    </Popover>
+  );
+}
+
+```

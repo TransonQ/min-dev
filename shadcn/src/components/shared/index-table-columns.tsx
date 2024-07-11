@@ -57,7 +57,7 @@ export function IndexTableColumns<TData>({
         const oldIndex = items.findIndex((item) => item.id === active.id);
         const newIndex = items.findIndex((item) => item.id === over?.id);
         const newItems = arrayMove(items, oldIndex, newIndex);
-        /** 牛逼！！！！！关键中的关键 */
+        /** 关键中的关键 */
         table.setColumnOrder(newItems.map((item) => item.id));
         return newItems;
       });
